@@ -2959,7 +2959,7 @@ end
 spawn(function()
 	pcall(function()
 		while wait() do
-			if Auto_Farm_Level then
+			if _G.SST.Auto_Farm_Level then
 				local character = game:GetService("Players").LocalPlayer.Character
 				local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
 				if humanoidRootPart and not humanoidRootPart:FindFirstChild("BodyClip") then
@@ -2986,7 +2986,7 @@ end)
 spawn(function()
 	pcall(function()
 		game:GetService("RunService").Stepped:Connect(function()
-			if Auto_Farm_Level then
+			if _G.SST.Auto_Farm_Level then
 				for _, v in pairs(game:GetService("Players").LocalPlayer.Character:GetDescendants()) do
 					if v:IsA("BasePart") then
 						v.CanCollide = false    
@@ -2999,7 +2999,7 @@ end)
 
 spawn(function()
 	while wait() do
-		if Auto_Farm_Level then
+		if _G.SST.Auto_Farm_Level then
 			pcall(function()
 				game:GetService("ReplicatedStorage").Remotes.CommE:FireServer("Ken",true)
 			end)
@@ -3686,7 +3686,6 @@ end)
             if _G.SST.Auto_Farm_Level then
                 pcall(function()
                     local QuestTitle = game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text
-					local StanDardPosFarm = CFrame.new(0,40,0)
                     if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
                         StartMagnet = false
                         CheckQuest()
@@ -3707,7 +3706,7 @@ end)
                                                 Equip(Weapon_Select)
                                                 AutoHaki()                                            
                                                 PosMon = v.HumanoidRootPart.CFrame
-                                                Tween(v.HumanoidRootPart.CFrame * StanDardPosFarm)
+                                                Tween(v.HumanoidRootPart.CFrame * CFrame.new(0,40,0))
                                                 v.Head.CanCollide = false
                                                 v.Humanoid.WalkSpeed = 0
                                                 v.Head.CanCollide = false
@@ -3724,7 +3723,7 @@ end)
                             StartMagnet = false
 							StopClick()
                             if game:GetService("ReplicatedStorage"):FindFirstChild(Mon) then
-                                Tween(game:GetService("ReplicatedStorage"):FindFirstChild(Mon).HumanoidRootPart.CFrame * StanDardPosFarm)
+                                Tween(game:GetService("ReplicatedStorage"):FindFirstChild(Mon).HumanoidRootPart.CFrame * CFrame.new(0,0,0))
                             else
                                 if (CFrameQuest.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 200 then
                                     if PUK ~= nil then
@@ -3746,7 +3745,153 @@ end)
         end
     end)
                                                 
-  
+	if World1 then
+        Main:AddToggleLeft("Auto New World",_G.SST.Auto_New_World,function(value)
+            Auto_New_World = value
+			_G.SST.Auto_New_World = Auto_New_World
+			SS()
+            StopTween()
+        end)
+    
+        spawn(function()
+            while wait() do 
+                if _G.SST.Auto_New_World then
+                    pcall(function()
+                        local MyLevel = game:GetService("Players").LocalPlayer.Data.Level.Value
+                        if MyLevel >= 700 and World1 then
+                            if game:GetService("Workspace").Map.Ice.Door.CanCollide == true and game:GetService("Workspace").Map.Ice.Door.Transparency == 0 then
+                                local CFrame1 = CFrame.new(4849.29883, 5.65138149, 719.611877)
+                                repeat Tween(CFrame1) wait() until (CFrame1.Position-game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 3 or AutoSecondSea == false
+                                wait(1.1)
+                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("DressrosaQuestProgress","Detective")
+                                wait(0.5)
+                                EquipWeapon("Key")
+                                repeat Tween(CFrame.new(1347.7124, 37.3751602, -1325.6488)) wait() until (Vector3.new(1347.7124, 37.3751602, -1325.6488)-game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 3 or AutoSecondSea == false
+                                wait(0.5)
+                            else
+                                if game:GetService("Workspace").Map.Ice.Door.CanCollide == false and game:GetService("Workspace").Map.Ice.Door.Transparency == 1 then
+                                    if game:GetService("Workspace").Enemies:FindFirstChild("Ice Admiral") then
+                                        for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                                            if v.Name == "Ice Admiral" then
+                                                if not v.Humanoid.Health <= 0 then
+                                                    if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                                                        OldCFrameSecond = v.HumanoidRootPart.CFrame
+                                                        repeat task.wait()
+                                                            AutoHaki()
+                                                            EquipWeapon(SelectWeapon)
+                                                            v.HumanoidRootPart.CanCollide = false
+                                                            v.Humanoid.WalkSpeed = 0
+                                                            v.Head.CanCollide = false
+                                                            v.HumanoidRootPart.CFrame = OldCFrameSecond
+                                                            Tween(v.HumanoidRootPart.CFrame * CFrame.new(5,10,7))
+                                                            game:GetService("VirtualUser"):CaptureController()
+                                                            game:GetService("VirtualUser"):Button1Down(Vector2.new(1280,672))
+                                                            sethiddenproperty(game:GetService("Players").LocalPlayer,"SimulationRadius",math.huge)
+                                                        until not _G.SST.Auto_New_World or not v.Parent or v.Humanoid.Health <= 0
+                                                    end
+                                                else 
+                                                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("TravelDressrosa")
+                                                end
+                                            end
+                                        end
+                                    else
+                                        if game:GetService("ReplicatedStorage"):FindFirstChild("Ice Admiral") then
+                                            Tween(game:GetService("ReplicatedStorage"):FindFirstChild("Ice Admiral").HumanoidRootPart.CFrame * CFrame.new(0,45,0))
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                end
+            end
+        end)
+    end
+    
+    if World2 then
+        Main:AddToggleLeft("Auto Third Sea",_G.SST.Auto_Third_Sea,function(value)
+			Auto_Third_Sea = value
+			_G.SST.Auto_Third_Sea = Auto_Third_Sea
+			SS()
+            StopTween()
+        end)
+    
+        spawn(function()
+            while wait() do
+                if _G.SST.Auto_Third_Sea then
+                    pcall(function()
+                        if game:GetService("Players").LocalPlayer.Data.Level.Value >= 1500 and World2 then
+                            AutoFarm = false
+                            if game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ZQuestProgress","Check") == 0 then
+                                Tween(CFrame.new(-1926.3221435547, 12.819851875305, 1738.3092041016))
+                                if (CFrame.new(-1926.3221435547, 12.819851875305, 1738.3092041016).Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 10 then
+                                    wait(1.5)
+                                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("ZQuestProgress","Begin")
+                                end
+                                wait(1.8)
+                                if game:GetService("Workspace").Enemies:FindFirstChild("rip_indra") then
+                                    for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                                        if v.Name == "rip_indra" then
+                                            OldCFrameThird = v.HumanoidRootPart.CFrame
+                                            repeat task.wait()
+                                                AutoHaki()
+                                                EquipWeapon(SelectWeapon)
+                                                Tween(v.HumanoidRootPart.CFrame * CFrame.new(5,10,7))
+                                                v.HumanoidRootPart.CFrame = OldCFrameThird
+                                               
+                                                v.HumanoidRootPart.CanCollide = false
+                                                v.Humanoid.WalkSpeed = 0
+                                                game:GetService'VirtualUser':CaptureController()
+                                                game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
+                                                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("TravelZou")
+                                                sethiddenproperty(game:GetService("Players").LocalPlayer,"SimulationRadius",math.huge)
+                                            until _G.SST.Auto_Third_Sea == false or v.Humanoid.Health <= 0 or not v.Parent
+                                        end
+                                    end
+                                elseif not game:GetService("Workspace").Enemies:FindFirstChild("rip_indra") and (CFrame.new(-26880.93359375, 22.848554611206, 473.18951416016).Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 1000 then
+                                    Tween(CFrame.new(-26880.93359375, 22.848554611206, 473.18951416016))
+                                end
+                            end
+                        end
+                    end)
+                end
+            end
+        end)
+    end
+    
+    if World2 then
+        Main:AddToggleLeft("Auto Factory",AutoFactory,function(value)
+            AutoFactory = value
+            StopTween(AutoFactory)
+        end)
+    
+        spawn(function()
+            while wait() do
+                pcall(function()
+                    if AutoFactory then
+                        if game:GetService("Workspace").Enemies:FindFirstChild("Core") then
+                            for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                                if v.Name == "Core" and v.Humanoid.Health > 0 then
+                                    repeat task.wait()
+                                        AutoHaki()         
+                                        EquipWeapon(SelectWeapon)           
+                                        Tween(CFrame.new(448.46756, 199.356781, -441.389252))                                  
+                                        game:GetService("VirtualUser"):CaptureController()
+                                        game:GetService("VirtualUser"):Button1Down(Vector2.new(1280,672))
+                                    until v.Humanoid.Health <= 0 or AutoFactory == false
+                                end
+                            end
+                        else
+                            Tween(CFrame.new(448.46756, 199.356781, -441.389252))
+                        end
+                    end
+                end)
+            end
+        end)
+    end
+
+
+
 ------------------------------------------------  Main R
 
 Main:AddSeperatorRight("Setting")
@@ -3780,9 +3925,8 @@ spawn(function()
 		pcall(function()
 			if _G.SST.Bring_Mon then
 				CheckQuest()
-				local StandardMagNet = 340
 				for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
-					if Auto_Farm_Level and StartMagnet and v.Name == NameMon and (NameMon == "Factory Staff" or NameMon == "Monkey" or NameMon == "Dragon Crew Warrior" or NameMon == "Dragon Crew Archer") and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 and (v.HumanoidRootPart.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= StandardMagNet then
+					if _G.SST.Auto_Farm_Level and StartMagnet and v.Name == NameMon and (NameMon == "Factory Staff" or NameMon == "Monkey" or NameMon == "Dragon Crew Warrior" or NameMon == "Dragon Crew Archer") and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 and (v.HumanoidRootPart.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 340 then
 						v.Humanoid:ChangeState(11)
 						v.HumanoidRootPart.CanCollide = false
 						v.Head.CanCollide = false
@@ -3790,7 +3934,18 @@ spawn(function()
 						if v.Humanoid:FindFirstChild("Animator") then
 							v.Humanoid.Animator:Destroy()
 						end
-					end
+							sethiddenproperty(game:GetService("Players").LocalPlayer,"SimulationRadius",math.huge)
+                    elseif _G.SST.Auto_Farm_Level and StartMagnet and v.Name == NameMon and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 and (v.HumanoidRootPart.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 340 then
+                        v.HumanoidRootPart.CFrame = PosMon
+                        v.Humanoid:ChangeState(11)
+                        v.HumanoidRootPart.CanCollide = false
+                        v.Head.CanCollide = false
+                    	if v.Humanoid:FindFirstChild("Animator") then
+                            v.Humanoid.Animator:Destroy()
+                        end
+                            sethiddenproperty(game:GetService("Players").LocalPlayer,"SimulationRadius",math.huge)
+                        end
+					
 				end
 			end
 		end)
