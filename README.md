@@ -2838,6 +2838,14 @@ end
 
 ------------------------------------------------ Function Main
 
+if game.PlaceId == 2753915549 then
+	World1 = true
+elseif game.PlaceId == 4442272183 then
+	World2 = true
+elseif game.PlaceId == 7449423635 then
+	World3 = true
+end
+
 function Click()
 	if isAttacking then return end  -- ถ้ากำลังโจมตีอยู่แล้วจะไม่ทำงานซ้ำ
 	isAttacking = true  -- เปิดการโจมตี
@@ -3807,5 +3815,6 @@ spawn(function()
 	   end)
    	end
 end)
+
 
 
